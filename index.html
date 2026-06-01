@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>SPK Dosen Teladan - Terintegrasi</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "error-container": "#ffdad6", "tertiary": "#000000", "on-primary-fixed-variant": "#3f465c",
+                        "inverse-surface": "#303032", "on-error-container": "#93000a", "on-secondary-container": "#54647a",
+                        "primary-container": "#131b2e", "surface-container-highest": "#e4e2e4", "outline-variant": "#c6c6cd",
+                        "surface-tint": "#565e74", "on-primary-fixed": "#131b2e", "secondary-fixed": "#d3e4fe",
+                        "surface": "#fcf8fa", "on-primary": "#ffffff", "on-surface-variant": "#45464d",
+                        "on-secondary": "#ffffff", "on-tertiary": "#ffffff", "secondary-fixed-dim": "#b7c8e1",
+                        "secondary-container": "#d0e1fb", "on-secondary-fixed-variant": "#38485d", "on-primary-container": "#7c839b",
+                        "surface-container-low": "#f6f3f5", "secondary": "#505f76", "on-tertiary-container": "#98805d",
+                        "on-surface": "#1b1b1d", "outline": "#76777d", "tertiary-fixed": "#fcdeb5",
+                        "surface-dim": "#dcd9db", "inverse-primary": "#bec6e0", "on-background": "#1b1b1d",
+                        "on-secondary-fixed": "#0b1c30", "on-tertiary-fixed": "#271901", "background": "#fcf8fa",
+                        "tertiary-container": "#271901", "surface-container-high": "#eae7e9", "surface-container": "#f0edef",
+                        "error": "#ba1a1a", "surface-variant": "#e4e2e4", "primary-fixed-dim": "#bec6e0",
+                        "inverse-on-surface": "#f3f0f2", "tertiary-fixed-dim": "#dec29a", "on-tertiary-fixed-variant": "#574425",
+                        "primary-fixed": "#dae2fd", "primary": "#000000", "surface-bright": "#fcf8fa", "on-error": "#ffffff",
+                        "surface-container-lowest": "#ffffff"
+                    },
+                    "borderRadius": { "DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem" },
+                    "spacing": { "gutter": "24px", "sidebar-width": "280px", "margin-mobile": "16px", "base": "4px", "header-height": "72px", "margin-desktop": "32px" },
+                    "fontFamily": {
+                        "body-sm": ["Inter"], "label-md": ["Inter"], "headline-md": ["Inter"], "headline-sm": ["Inter"],
+                        "display-lg": ["Inter"], "body-md": ["Inter"], "headline-lg-mobile": ["Inter"], "body-lg": ["Inter"]
+                    },
+                    "fontSize": {
+                        "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}], "label-md": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                        "headline-md": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600"}], "headline-sm": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                        "display-lg": ["36px", {"lineHeight": "44px", "letterSpacing": "-0.02em", "fontWeight": "700"}], "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "headline-lg-mobile": ["28px", {"lineHeight": "36px", "fontWeight": "700"}], "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}]
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        body { min-height: max(884px, 100dvh); font-family: 'Inter', sans-serif; background-color: #fcf8fa; overflow-x: hidden; }
+        .soft-whisper { box-shadow: 0px 4px 20px rgba(15, 23, 42, 0.05); }
+        .soft-whisper-shadow { box-shadow: 0px 4px 20px rgba(15, 23, 42, 0.05); }
+        .consistency-border { border-left: 4px solid #10b981; }
+        .screen { display: none; animation: fadeIn 0.3s ease-in-out; }
+        .screen.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body class="bg-background text-on-surface">
+
+    <header class="fixed top-0 left-0 w-full h-header-height z-40 shadow-sm bg-surface flex justify-between items-center px-margin-desktop">
+        <div class="flex items-center gap-4">
+            <span class="material-symbols-outlined cursor-pointer text-primary active:scale-95 md:hidden">menu</span>
+            <h1 class="font-headline-md text-headline-md font-bold text-primary">SPK Dosen Teladan</h1>
+        </div>
+        <div class="flex items-center gap-6">
+            <div class="relative hidden md:block">
+                <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline">search</span>
+                <input class="pl-10 pr-4 py-2 bg-surface-container-lowest border border-outline-variant rounded-lg w-64 focus:outline-none focus:border-primary text-body-sm" placeholder="Cari data..." type="text"/>
+            </div>
+            <span class="material-symbols-outlined text-primary cursor-pointer active:scale-95">account_circle</span>
+        </div>
+    </header>
+
+    <div class="flex pt-header-height">
+        <aside class="fixed left-0 top-0 h-full w-sidebar-width z-50 bg-surface border-r border-outline-variant flex flex-col pt-header-height hidden md:flex">
+            <div class="px-6 py-8">
+                <h2 class="font-headline-sm text-headline-sm font-semibold text-primary">DSS Admin</h2>
+            </div>
+            <nav class="flex-1">
+                <a id="nav-dashboard" onclick="navigate('dashboard')" class="nav-item flex items-center px-6 py-4 border-l-4 border-primary text-primary font-bold bg-surface-container-high transition-all cursor-pointer">
+                    <span class="material-symbols-outlined mr-4">dashboard</span>
+                    <span class="font-body-md text-body-md">Dashboard Overview</span>
+                </a>
+                <a id="nav-kriteria" onclick="navigate('kriteria')" class="nav-item flex items-center px-6 py-4 border-l-4 border-transparent text-on-surface-variant hover:bg-surface-container-low transition-all cursor-pointer">
+                    <span class="material-symbols-outlined mr-4">list_alt</span>
+                    <span class="font-body-md text-body-md">Data Kriteria</span>
+                </a>
+                <a id="nav-alternatif" onclick="navigate('alternatif')" class="nav-item flex items-center px-6 py-4 border-l-4 border-transparent text-on-surface-variant hover:bg-surface-container-low transition-all cursor-pointer">
+                    <span class="material-symbols-outlined mr-4">groups</span>
+                    <span class="font-body-md text-body-md">Data Alternatif</span>
+                </a>
+                <a id="nav-matriks" onclick="navigate('matriks')" class="nav-item flex items-center px-6 py-4 border-l-4 border-transparent text-on-surface-variant hover:bg-surface-container-low transition-all cursor-pointer">
+                    <span class="material-symbols-outlined mr-4">query_stats</span>
+                    <span class="font-body-md text-body-md">Matriks Perbandingan</span>
+                </a>
+                <a id="nav-hasil" onclick="navigate('hasil')" class="nav-item flex items-center px-6 py-4 border-l-4 border-transparent text-on-surface-variant hover:bg-surface-container-low transition-all cursor-pointer">
+                    <span class="material-symbols-outlined mr-4" style="font-variation-settings: 'FILL' 1;">emoji_events</span>
+                    <span class="font-body-md text-body-md">Hasil Akhir</span>
+                </a>
+            </nav>
+            <div class="p-6 border-t border-outline-variant">
+                <div class="flex items-center gap-3 p-3 rounded-xl bg-surface-container-low">
+                    <div class="w-10 h-10 rounded-full bg-primary-container flex items-center justify-center text-on-primary-container font-bold">AD</div>
+                    <div>
+                        <p class="text-label-md font-bold text-on-surface">Janatha Z.</p>
+                        <p class="text-[10px] text-secondary">Admin Utama</p>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <main class="ml-0 md:ml-sidebar-width w-full min-h-screen p-margin-mobile md:p-margin-desktop pb-24 md:pb-8">
+            <div class="max-w-7xl mx-auto">
+                
+                <div id="screen-dashboard" class="screen active">
+                    <section class="mb-8">
+                        <h2 class="font-display-lg text-display-lg text-primary mb-2">Dashboard Ringkasan</h2>
+                        <p class="font-body-lg text-body-lg text-secondary">Sistem Pendukung Keputusan Pemilihan Dosen Teladan Tahun Akademik 2023/2024.</p>
+                    </section>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-gutter mb-gutter">
+                        <div class="bg-surface-container-lowest p-6 rounded-xl shadow-sm border-l-4 border-primary flex flex-col justify-between soft-whisper">
+                            <div class="flex justify-between items-start mb-4"><span class="text-secondary font-label-md text-label-md uppercase">Total Kriteria</span><span class="material-symbols-outlined text-on-primary-container">list_alt</span></div>
+                            <div class="font-headline-md text-headline-md text-primary">6</div>
+                        </div>
+                        <div class="bg-surface-container-lowest p-6 rounded-xl shadow-sm border-l-4 border-primary flex flex-col justify-between soft-whisper">
+                            <div class="flex justify-between items-start mb-4"><span class="text-secondary font-label-md text-label-md uppercase">Total Dosen</span><span class="material-symbols-outlined text-on-primary-container">groups</span></div>
+                            <div class="font-headline-md text-headline-md text-primary">10</div>
+                        </div>
+                        <div class="bg-surface-container-lowest p-6 rounded-xl shadow-sm border-l-4 border-primary flex flex-col justify-between soft-whisper">
+                            <div class="flex justify-between items-start mb-4"><span class="text-secondary font-label-md text-label-md uppercase">Status AHP</span><span class="material-symbols-outlined text-on-primary-container">verified</span></div>
+                            <div>
+                                <span class="inline-flex items-center px-3 py-1 bg-green-100 text-green-800 rounded-full font-label-md text-label-md mb-2 border border-green-200">Konsisten</span>
+                                <div class="font-body-sm text-body-sm text-secondary">CR = 0.0699</div>
+                            </div>
+                        </div>
+                        <div class="bg-surface-container-lowest p-6 rounded-xl shadow-sm border-l-4 border-primary flex flex-col justify-between soft-whisper">
+                            <div class="flex justify-between items-start mb-4"><span class="text-secondary font-label-md text-label-md uppercase">Terbaik Terpilih</span><span class="material-symbols-outlined text-on-primary-container">emoji_events</span></div>
+                            <div class="font-body-md text-body-md text-primary font-bold">Puspa Eosina Hosen (A8)</div>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-gutter">
+                        <div class="lg:col-span-2 bg-surface-container-lowest p-8 rounded-xl soft-whisper border border-slate-100">
+                            <div class="flex justify-between items-center mb-6">
+                                <h3 class="font-headline-sm text-headline-sm text-primary">Grafik Perolehan Nilai Akhir</h3>
+                                <span class="material-symbols-outlined text-secondary cursor-pointer hover:text-primary">more_horiz</span>
+                            </div>
+                            <div class="relative h-72 w-full">
+                                <canvas id="dashboardChart"></canvas>
+                            </div>
+                        </div>
+                        <div class="bg-surface-container-lowest p-8 rounded-xl soft-whisper border border-slate-100">
+                            <h3 class="font-headline-sm text-headline-sm text-primary mb-6">Detail Alternatif Teratas</h3>
+                            <div class="space-y-6">
+                                <div class="flex items-center gap-4 p-4 border border-outline-variant rounded-xl hover:border-primary transition-colors bg-surface-bright">
+                                    <div class="w-12 h-12 rounded-full bg-primary-fixed flex items-center justify-center text-primary font-bold shadow-inner">1</div>
+                                    <div><p class="font-body-md text-body-md font-bold text-primary">Puspa Eosina Hosen</p><p class="font-body-sm text-body-sm text-secondary">Skor Akhir: 0.09289</p></div>
+                                </div>
+                                <div class="flex items-center gap-4 p-4 border border-outline-variant rounded-xl hover:border-primary transition-colors">
+                                    <div class="w-12 h-12 rounded-full bg-surface-variant flex items-center justify-center text-on-surface-variant font-bold">2</div>
+                                    <div><p class="font-body-md text-body-md font-bold text-primary">Setya Permana S.</p><p class="font-body-sm text-body-sm text-secondary">Skor Akhir: 0.09047</p></div>
+                                </div>
+                                <div class="flex items-center gap-4 p-4 border border-outline-variant rounded-xl hover:border-primary transition-colors">
+                                    <div class="w-12 h-12 rounded-full bg-surface-variant flex items-center justify-center text-on-surface-variant font-bold">3</div>
+                                    <div><p class="font-body-md text-body-md font-bold text-primary">Nurul Cahyati</p><p class="font-body-sm text-body-sm text-secondary">Skor Akhir: 0.08306</p></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="screen-kriteria" class="screen">
+                    <div class="mb-10 flex flex-col md:flex-row md:items-end justify-between gap-4">
+                        <div>
+                            <h2 class="font-display-lg text-display-lg text-primary mb-2">Kelola Data Kriteria & Bobot</h2>
+                            <p class="font-body-lg text-body-lg text-secondary">Definisikan parameter penilaian dan distribusi kepentingan relatif.</p>
+                        </div>
+                        <div class="flex gap-3">
+                            <button class="px-6 py-2.5 bg-primary text-on-primary font-semibold rounded-lg hover:opacity-90 flex items-center gap-2">
+                                <span class="material-symbols-outlined text-[20px]">add</span>Tambah Kriteria
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="grid grid-cols-12 gap-gutter">
+                        <div class="col-span-12 lg:col-span-8 bg-surface-container-lowest soft-whisper-shadow rounded-xl overflow-hidden border border-slate-100">
+                            <div class="p-6 border-b border-outline-variant flex justify-between items-center">
+                                <h3 class="font-headline-sm text-headline-sm text-primary">Daftar Kriteria Penilaian</h3>
+                                <div class="flex items-center gap-2 text-outline"><span class="material-symbols-outlined">info</span><span class="font-label-md text-label-md">Total Bobot: 1.0000</span></div>
+                            </div>
+                            <div class="overflow-x-auto">
+                                <table class="w-full text-left border-collapse">
+                                    <thead>
+                                        <tr class="bg-surface-container-low">
+                                            <th class="px-6 py-4 font-label-md text-on-surface-variant">KODE</th>
+                                            <th class="px-6 py-4 font-label-md text-on-surface-variant">NAMA KRITERIA</th>
+                                            <th class="px-6 py-4 font-label-md text-on-surface-variant text-right">BOBOT (VECTOR)</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="divide-y divide-outline-variant">
+                                        <tr class="hover:bg-surface-container-lowest transition-colors border-l-4 border-transparent hover:border-primary-fixed-dim">
+                                            <td class="px-6 py-5 font-bold text-primary">K01</td><td class="px-6 py-5">Ketersediaan RPS</td><td class="px-6 py-5 text-right font-semibold text-primary">0.41533</td>
+                                        </tr>
+                                        <tr class="hover:bg-surface-container-lowest transition-colors border-l-4 border-transparent hover:border-primary-fixed-dim">
+                                            <td class="px-6 py-5 font-bold text-primary">K02</td><td class="px-6 py-5">Membimbing Mahasiswa</td><td class="px-6 py-5 text-right font-semibold text-primary">0.25598</td>
+                                        </tr>
+                                        <tr class="hover:bg-surface-container-lowest transition-colors border-l-4 border-transparent hover:border-primary-fixed-dim">
+                                            <td class="px-6 py-5 font-bold text-primary">K03</td><td class="px-6 py-5">Publikasi Internasional</td><td class="px-6 py-5 text-right font-semibold text-primary">0.15395</td>
+                                        </tr>
+                                        <tr class="hover:bg-surface-container-lowest transition-colors border-l-4 border-transparent hover:border-primary-fixed-dim">
+                                            <td class="px-6 py-5 font-bold text-primary">K04</td><td class="px-6 py-5">Publikasi Nasional</td><td class="px-6 py-5 text-right font-semibold text-primary">0.09626</td>
+                                        </tr>
+                                        <tr class="hover:bg-surface-container-lowest transition-colors border-l-4 border-transparent hover:border-primary-fixed-dim">
+                                            <td class="px-6 py-5 font-bold text-primary">K05</td><td class="px-6 py-5">Pengabdian Masyarakat</td><td class="px-6 py-5 text-right font-semibold text-primary">0.05403</td>
+                                        </tr>
+                                        <tr class="hover:bg-surface-container-lowest transition-colors border-l-4 border-transparent hover:border-primary-fixed-dim">
+                                            <td class="px-6 py-5 font-bold text-primary">K06</td><td class="px-6 py-5">Kehadiran</td><td class="px-6 py-5 text-right font-semibold text-primary">0.02442</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="col-span-12 lg:col-span-4 space-y-gutter">
+                            <div class="bg-surface-container-lowest soft-whisper-shadow rounded-xl p-6 border border-slate-100">
+                                <h4 class="font-headline-sm text-headline-sm text-primary mb-6">Distribusi Bobot</h4>
+                                <div class="space-y-5">
+                                    <div>
+                                        <div class="flex justify-between font-label-md text-label-md mb-1.5"><span>K01: Ketersediaan RPS</span><span class="font-bold text-primary">41.5%</span></div>
+                                        <div class="w-full bg-surface-container-highest h-2.5 rounded-full overflow-hidden"><div class="bg-primary h-full rounded-full" style="width: 41.53%"></div></div>
+                                    </div>
+                                    <div>
+                                        <div class="flex justify-between font-label-md text-label-md mb-1.5"><span>K02: Membimbing Mhs.</span><span class="font-bold text-primary">25.6%</span></div>
+                                        <div class="w-full bg-surface-container-highest h-2.5 rounded-full overflow-hidden"><div class="bg-primary opacity-70 h-full rounded-full" style="width: 25.59%"></div></div>
+                                    </div>
+                                    <div>
+                                        <div class="flex justify-between font-label-md text-label-md mb-1.5"><span class="text-secondary">Lainnya (K03 - K06)</span><span class="font-bold text-secondary">32.9%</span></div>
+                                        <div class="w-full bg-surface-container-highest h-2.5 rounded-full overflow-hidden"><div class="bg-outline-variant h-full rounded-full" style="width: 32.88%"></div></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="bg-primary-container text-on-primary-container soft-whisper-shadow rounded-xl p-6 relative overflow-hidden">
+                                <div class="relative z-10">
+                                    <div class="flex items-center gap-2 mb-2"><span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">check_circle</span><h4 class="font-headline-sm text-headline-sm">Rasio Konsistensi</h4></div>
+                                    <p class="text-display-lg font-bold mb-1">CR: 0.0699</p>
+                                    <p class="font-body-sm opacity-80 mt-2">Rasio di bawah 0.1 menunjukkan matriks perbandingan valid.</p>
+                                </div>
+                                <span class="material-symbols-outlined absolute -right-4 -bottom-4 text-8xl opacity-10">analytics</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="screen-alternatif" class="screen">
+                    <div class="flex flex-col md:flex-row md:items-end justify-between mb-8 gap-4">
+                        <div>
+                            <h2 class="font-display-lg text-display-lg text-primary mb-2">Kelola Data Alternatif</h2>
+                            <p class="font-body-lg text-body-lg text-secondary">Manajemen daftar dosen yang akan dievaluasi dalam sistem.</p>
+                        </div>
+                        <button class="flex items-center justify-center gap-2 bg-primary text-on-primary px-6 py-2.5 rounded-lg font-bold shadow-sm hover:opacity-90 active:scale-95 transition-all">
+                            <span class="material-symbols-outlined text-[20px]">person_add</span>Tambah Dosen
+                        </button>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-gutter mb-6">
+                        <div class="bg-surface-container-lowest p-6 rounded-xl soft-whisper-shadow border-l-4 border-primary">
+                            <div class="flex justify-between items-center"><span class="text-secondary font-label-md uppercase">Total Kandidat</span><span class="material-symbols-outlined text-primary">groups</span></div>
+                            <div class="font-headline-md text-headline-md text-primary mt-2">10 <span class="text-body-sm font-normal text-secondary ml-1">Dosen Aktif</span></div>
+                        </div>
+                        <div class="bg-surface-container-lowest p-6 rounded-xl soft-whisper-shadow border-l-4 border-green-500">
+                            <div class="flex justify-between items-center"><span class="text-secondary font-label-md uppercase">Berkas Lengkap</span><span class="material-symbols-outlined text-green-500">task_alt</span></div>
+                            <div class="font-headline-md text-headline-md text-primary mt-2">8 <span class="text-body-sm font-normal text-secondary ml-1">Siap Dievaluasi</span></div>
+                        </div>
+                        <div class="bg-surface-container-lowest p-6 rounded-xl soft-whisper-shadow border-l-4 border-amber-500">
+                            <div class="flex justify-between items-center"><span class="text-secondary font-label-md uppercase">Status Draft</span><span class="material-symbols-outlined text-amber-500">pending_actions</span></div>
+                            <div class="font-headline-md text-headline-md text-primary mt-2">2 <span class="text-body-sm font-normal text-secondary ml-1">Perlu Dilengkapi</span></div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-surface-container-lowest rounded-xl shadow-[0px_4px_20px_rgba(15,23,42,0.05)] overflow-hidden border border-slate-100">
+                        <div class="p-6 border-b border-outline-variant flex justify-between items-center bg-surface-container-low/50">
+                            <div class="relative">
+                                <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline text-[18px]">search</span>
+                                <input type="text" placeholder="Cari nama dosen..." class="pl-9 pr-4 py-2 border border-outline-variant rounded-lg text-body-sm focus:border-primary outline-none bg-surface-container-lowest min-w-[250px]">
+                            </div>
+                            <button class="flex items-center gap-2 text-primary font-bold text-body-sm border border-outline-variant bg-surface-container-lowest hover:bg-surface-container-low px-4 py-2 rounded-lg transition-all"><span class="material-symbols-outlined text-[18px]">filter_list</span> Filter</button>
+                        </div>
+                        
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left">
+                                <thead>
+                                    <tr class="bg-surface-container-low text-on-surface-variant text-label-md uppercase tracking-wider">
+                                        <th class="px-6 py-4 font-semibold">ID</th>
+                                        <th class="px-6 py-4 font-semibold">Dosen</th>
+                                        <th class="px-6 py-4 font-semibold">NIDN / NIP</th>
+                                        <th class="px-6 py-4 font-semibold">Program Studi</th>
+                                        <th class="px-6 py-4 font-semibold">Status Data</th>
+                                        <th class="px-6 py-4 font-semibold text-right">Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-outline-variant text-body-sm">
+                                    <tr class="hover:bg-surface-container-low transition-colors group">
+                                        <td class="px-6 py-4 text-primary font-bold">A1</td>
+                                        <td class="px-6 py-4 flex items-center gap-3"><div class="w-8 h-8 rounded-full bg-primary-fixed text-primary flex items-center justify-center font-bold text-xs shadow-inner">AG</div><span class="font-semibold text-primary">Arief Goeritno</span></td>
+                                        <td class="px-6 py-4 text-secondary">0012057201</td>
+                                        <td class="px-6 py-4">Teknik Elektro</td>
+                                        <td class="px-6 py-4">
+                                            <span class="px-3 py-1 rounded-full bg-green-100 text-green-700 text-label-md border border-green-200">Lengkap</span>
+                                            <div class="w-full bg-surface-container-highest h-1 rounded-full mt-2"><div class="bg-green-500 h-full rounded-full" style="width: 100%"></div></div>
+                                        </td>
+                                        <td class="px-6 py-4 text-right"><div class="flex justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity"><button class="text-secondary hover:text-primary"><span class="material-symbols-outlined text-[18px]">edit</span></button><button class="text-secondary hover:text-error"><span class="material-symbols-outlined text-[18px]">delete</span></button></div></td>
+                                    </tr>
+                                    <tr class="hover:bg-surface-container-low transition-colors group">
+                                        <td class="px-6 py-4 text-primary font-bold">A2</td>
+                                        <td class="px-6 py-4 flex items-center gap-3"><div class="w-8 h-8 rounded-full bg-primary-fixed text-primary flex items-center justify-center font-bold text-xs shadow-inner">YA</div><span class="font-semibold text-primary">Yuggo Afrianto</span></td>
+                                        <td class="px-6 py-4 text-secondary">0023088504</td>
+                                        <td class="px-6 py-4">Sistem Informasi</td>
+                                        <td class="px-6 py-4">
+                                            <span class="px-3 py-1 rounded-full bg-green-100 text-green-700 text-label-md border border-green-200">Lengkap</span>
+                                            <div class="w-full bg-surface-container-highest h-1 rounded-full mt-2"><div class="bg-green-500 h-full rounded-full" style="width: 100%"></div></div>
+                                        </td>
+                                        <td class="px-6 py-4 text-right"><div class="flex justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity"><button class="text-secondary hover:text-primary"><span class="material-symbols-outlined text-[18px]">edit</span></button><button class="text-secondary hover:text-error"><span class="material-symbols-outlined text-[18px]">delete</span></button></div></td>
+                                    </tr>
+                                    <tr class="hover:bg-surface-container-low transition-colors group">
+                                        <td class="px-6 py-4 text-primary font-bold">A3</td>
+                                        <td class="px-6 py-4 flex items-center gap-3"><div class="w-8 h-8 rounded-full bg-primary-fixed text-primary flex items-center justify-center font-bold text-xs shadow-inner">RW</div><span class="font-semibold text-primary">Roy Waluyo</span></td>
+                                        <td class="px-6 py-4 text-secondary">0015017802</td>
+                                        <td class="px-6 py-4">Teknik Informatika</td>
+                                        <td class="px-6 py-4">
+                                            <span class="px-3 py-1 rounded-full bg-green-100 text-green-700 text-label-md border border-green-200">Lengkap</span>
+                                            <div class="w-full bg-surface-container-highest h-1 rounded-full mt-2"><div class="bg-green-500 h-full rounded-full" style="width: 100%"></div></div>
+                                        </td>
+                                        <td class="px-6 py-4 text-right"><div class="flex justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity"><button class="text-secondary hover:text-primary"><span class="material-symbols-outlined text-[18px]">edit</span></button><button class="text-secondary hover:text-error"><span class="material-symbols-outlined text-[18px]">delete</span></button></div></td>
+                                    </tr>
+                                    <tr class="hover:bg-surface-container-low transition-colors group">
+                                        <td class="px-6 py-4 text-primary font-bold">A4</td>
+                                        <td class="px-6 py-4 flex items-center gap-3"><div class="w-8 h-8 rounded-full bg-primary-fixed text-primary flex items-center justify-center font-bold text-xs shadow-inner">SP</div><span class="font-semibold text-primary">Setya Permana Sutisna</span></td>
+                                        <td class="px-6 py-4 text-secondary">0021027503</td>
+                                        <td class="px-6 py-4">Manajemen</td>
+                                        <td class="px-6 py-4">
+                                            <span class="px-3 py-1 rounded-full bg-green-100 text-green-700 text-label-md border border-green-200">Lengkap</span>
+                                            <div class="w-full bg-surface-container-highest h-1 rounded-full mt-2"><div class="bg-green-500 h-full rounded-full" style="width: 100%"></div></div>
+                                        </td>
+                                        <td class="px-6 py-4 text-right"><div class="flex justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity"><button class="text-secondary hover:text-primary"><span class="material-symbols-outlined text-[18px]">edit</span></button><button class="text-secondary hover:text-error"><span class="material-symbols-outlined text-[18px]">delete</span></button></div></td>
+                                    </tr>
+                                    <tr class="hover:bg-surface-container-low transition-colors group">
+                                        <td class="px-6 py-4 text-primary font-bold">A5</td>
+                                        <td class="px-6 py-4 flex items-center gap-3"><div class="w-8 h-8 rounded-full bg-surface-container-highest text-secondary flex items-center justify-center font-bold text-xs shadow-inner">NC</div><span class="font-semibold text-primary">Nurul Cahyati</span></td>
+                                        <td class="px-6 py-4 text-secondary">0031128801</td>
+                                        <td class="px-6 py-4">Akuntansi</td>
+                                        <td class="px-6 py-4">
+                                            <span class="px-3 py-1 rounded-full bg-amber-100 text-amber-700 text-label-md border border-amber-200">Draft</span>
+                                            <div class="w-full bg-surface-container-highest h-1 rounded-full mt-2"><div class="bg-amber-500 h-full rounded-full" style="width: 75%"></div></div>
+                                        </td>
+                                        <td class="px-6 py-4 text-right"><div class="flex justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity"><button class="text-secondary hover:text-primary"><span class="material-symbols-outlined text-[18px]">edit</span></button><button class="text-secondary hover:text-error"><span class="material-symbols-outlined text-[18px]">delete</span></button></div></td>
+                                    </tr>
+                                    <tr class="hover:bg-surface-container-low transition-colors group">
+                                        <td class="px-6 py-4 text-primary font-bold">A6</td>
+                                        <td class="px-6 py-4 flex items-center gap-3"><div class="w-8 h-8 rounded-full bg-surface-container-highest text-secondary flex items-center justify-center font-bold text-xs shadow-inner">DA</div><span class="font-semibold text-primary">Dosen A6</span></td>
+                                        <td class="px-6 py-4 text-secondary">0099999999</td>
+                                        <td class="px-6 py-4">Teknik Sipil</td>
+                                        <td class="px-6 py-4">
+                                            <span class="px-3 py-1 rounded-full bg-surface-container-high text-secondary text-label-md border border-outline-variant">Belum Ada</span>
+                                            <div class="w-full bg-surface-container-highest h-1 rounded-full mt-2"><div class="bg-outline-variant h-full rounded-full" style="width: 0%"></div></div>
+                                        </td>
+                                        <td class="px-6 py-4 text-right"><div class="flex justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity"><button class="text-secondary hover:text-primary"><span class="material-symbols-outlined text-[18px]">edit</span></button><button class="text-secondary hover:text-error"><span class="material-symbols-outlined text-[18px]">delete</span></button></div></td>
+                                    </tr>
+                                    <tr class="hover:bg-surface-container-low transition-colors group">
+                                        <td class="px-6 py-4 text-primary font-bold">A7</td>
+                                        <td class="px-6 py-4 flex items-center gap-3"><div class="w-8 h-8 rounded-full bg-primary-fixed text-primary flex items-center justify-center font-bold text-xs shadow-inner">RU</div><span class="font-semibold text-primary">Rulhendri</span></td>
+                                        <td class="px-6 py-4 text-secondary">0005058002</td>
+                                        <td class="px-6 py-4">Arsitektur</td>
+                                        <td class="px-6 py-4">
+                                            <span class="px-3 py-1 rounded-full bg-green-100 text-green-700 text-label-md border border-green-200">Lengkap</span>
+                                            <div class="w-full bg-surface-container-highest h-1 rounded-full mt-2"><div class="bg-green-500 h-full rounded-full" style="width: 100%"></div></div>
+                                        </td>
+                                        <td class="px-6 py-4 text-right"><div class="flex justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity"><button class="text-secondary hover:text-primary"><span class="material-symbols-outlined text-[18px]">edit</span></button><button class="text-secondary hover:text-error"><span class="material-symbols-outlined text-[18px]">delete</span></button></div></td>
+                                    </tr>
+                                    <tr class="hover:bg-surface-container-low transition-colors group">
+                                        <td class="px-6 py-4 text-primary font-bold">A8</td>
+                                        <td class="px-6 py-4 flex items-center gap-3"><div class="w-8 h-8 rounded-full bg-primary-fixed text-primary flex items-center justify-center font-bold text-xs shadow-inner">PE</div><span class="font-semibold text-primary">Puspa Eosina Hosen</span></td>
+                                        <td class="px-6 py-4 text-secondary">0010108301</td>
+                                        <td class="px-6 py-4">Farmasi</td>
+                                        <td class="px-6 py-4">
+                                            <span class="px-3 py-1 rounded-full bg-green-100 text-green-700 text-label-md border border-green-200">Lengkap</span>
+                                            <div class="w-full bg-surface-container-highest h-1 rounded-full mt-2"><div class="bg-green-500 h-full rounded-full" style="width: 100%"></div></div>
+                                        </td>
+                                        <td class="px-6 py-4 text-right"><div class="flex justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity"><button class="text-secondary hover:text-primary"><span class="material-symbols-outlined text-[18px]">edit</span></button><button class="text-secondary hover:text-error"><span class="material-symbols-outlined text-[18px]">delete</span></button></div></td>
+                                    </tr>
+                                    <tr class="hover:bg-surface-container-low transition-colors group">
+                                        <td class="px-6 py-4 text-primary font-bold">A9</td>
+                                        <td class="px-6 py-4 flex items-center gap-3"><div class="w-8 h-8 rounded-full bg-primary-fixed text-primary flex items-center justify-center font-bold text-xs shadow-inner">BH</div><span class="font-semibold text-primary">Budi Hartono</span></td>
+                                        <td class="px-6 py-4 text-secondary">0015097905</td>
+                                        <td class="px-6 py-4">Teknik Industri</td>
+                                        <td class="px-6 py-4">
+                                            <span class="px-3 py-1 rounded-full bg-green-100 text-green-700 text-label-md border border-green-200">Lengkap</span>
+                                            <div class="w-full bg-surface-container-highest h-1 rounded-full mt-2"><div class="bg-green-500 h-full rounded-full" style="width: 100%"></div></div>
+                                        </td>
+                                        <td class="px-6 py-4 text-right"><div class="flex justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity"><button class="text-secondary hover:text-primary"><span class="material-symbols-outlined text-[18px]">edit</span></button><button class="text-secondary hover:text-error"><span class="material-symbols-outlined text-[18px]">delete</span></button></div></td>
+                                    </tr>
+                                    <tr class="hover:bg-surface-container-low transition-colors group">
+                                        <td class="px-6 py-4 text-primary font-bold">A15</td>
+                                        <td class="px-6 py-4 flex items-center gap-3"><div class="w-8 h-8 rounded-full bg-surface-container-highest text-secondary flex items-center justify-center font-bold text-xs shadow-inner">JI</div><span class="font-semibold text-primary">Joki Irawan</span></td>
+                                        <td class="px-6 py-4 text-secondary">0025068202</td>
+                                        <td class="px-6 py-4">Sastra Inggris</td>
+                                        <td class="px-6 py-4">
+                                            <span class="px-3 py-1 rounded-full bg-amber-100 text-amber-700 text-label-md border border-amber-200">Draft</span>
+                                            <div class="w-full bg-surface-container-highest h-1 rounded-full mt-2"><div class="bg-amber-500 h-full rounded-full" style="width: 50%"></div></div>
+                                        </td>
+                                        <td class="px-6 py-4 text-right"><div class="flex justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity"><button class="text-secondary hover:text-primary"><span class="material-symbols-outlined text-[18px]">edit</span></button><button class="text-secondary hover:text-error"><span class="material-symbols-outlined text-[18px]">delete</span></button></div></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="screen-matriks" class="screen">
+                    <div class="mb-8 flex flex-col md:flex-row md:items-end justify-between gap-4">
+                        <div>
+                            <nav class="flex text-label-md text-on-surface-variant mb-2"><span>AHP Process</span><span class="mx-2">/</span><span class="text-primary font-semibold">Matriks</span></nav>
+                            <h1 class="font-display-lg text-display-lg text-primary">Matriks Perbandingan Berpasangan</h1>
+                        </div>
+                        <div class="flex gap-3">
+                            <button class="px-6 py-2.5 border border-outline text-on-surface font-semibold hover:bg-surface-container-low transition-colors rounded-lg flex items-center"><span class="material-symbols-outlined mr-2">refresh</span>Reset Matrix</button>
+                            <button class="px-6 py-2.5 bg-primary text-on-primary font-semibold hover:opacity-90 transition-opacity rounded-lg flex items-center"><span class="material-symbols-outlined mr-2">calculate</span>Hitung AHP</button>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-12 gap-gutter">
+                        <div class="col-span-12 lg:col-span-8 bg-surface-container-lowest p-8 rounded-xl soft-whisper border border-slate-100">
+                            <div class="flex justify-between items-center mb-6">
+                                <h2 class="font-headline-sm text-headline-sm text-primary">Matriks Perbandingan Kriteria</h2>
+                                <span class="text-label-md bg-secondary-container text-on-secondary-container px-3 py-1 rounded-full">N = 6</span>
+                            </div>
+                            <div class="overflow-x-auto">
+                                <table class="w-full border-collapse">
+                                    <thead>
+                                        <tr class="border-b border-outline-variant"><th class="p-4 text-left font-bold text-secondary bg-surface-container-low">Kode</th><th class="p-4 text-center font-bold text-secondary">K01</th><th class="p-4 text-center font-bold text-secondary">K02</th><th class="p-4 text-center font-bold text-secondary">K03</th><th class="p-4 text-center font-bold text-secondary">K04</th><th class="p-4 text-center font-bold text-secondary">K05</th><th class="p-4 text-center font-bold text-secondary">K06</th></tr>
+                                    </thead>
+                                    <tbody class="text-body-md">
+                                        <tr class="border-b hover:bg-surface-container-lowest"><td class="p-4 font-bold text-primary bg-surface-container-low">K01</td><td class="p-4 text-center bg-primary-container/5 font-bold">1</td><td class="p-4 text-center">3</td><td class="p-4 text-center">4</td><td class="p-4 text-center">5</td><td class="p-4 text-center">6</td><td class="p-4 text-center">9</td></tr>
+                                        <tr class="border-b hover:bg-surface-container-lowest"><td class="p-4 font-bold text-primary bg-surface-container-low">K02</td><td class="p-4 text-center text-secondary">0.33</td><td class="p-4 text-center bg-primary-container/5 font-bold">1</td><td class="p-4 text-center">3</td><td class="p-4 text-center">4</td><td class="p-4 text-center">6</td><td class="p-4 text-center">8</td></tr>
+                                        <tr class="border-b hover:bg-surface-container-lowest"><td class="p-4 font-bold text-primary bg-surface-container-low">K03</td><td class="p-4 text-center text-secondary">0.25</td><td class="p-4 text-center text-secondary">0.33</td><td class="p-4 text-center bg-primary-container/5 font-bold">1</td><td class="p-4 text-center">3</td><td class="p-4 text-center">4</td><td class="p-4 text-center">7</td></tr>
+                                        <tr class="border-b hover:bg-surface-container-lowest"><td class="p-4 font-bold text-primary bg-surface-container-low">K04</td><td class="p-4 text-center text-secondary">0.20</td><td class="p-4 text-center text-secondary">0.25</td><td class="p-4 text-center text-secondary">0.33</td><td class="p-4 text-center bg-primary-container/5 font-bold">1</td><td class="p-4 text-center">3</td><td class="p-4 text-center">6</td></tr>
+                                        <tr class="border-b hover:bg-surface-container-lowest"><td class="p-4 font-bold text-primary bg-surface-container-low">K05</td><td class="p-4 text-center text-secondary">0.16</td><td class="p-4 text-center text-secondary">0.12</td><td class="p-4 text-center text-secondary">0.14</td><td class="p-4 text-center text-secondary">0.16</td><td class="p-4 text-center bg-primary-container/5 font-bold">1</td><td class="p-4 text-center">5</td></tr>
+                                        <tr class="border-b hover:bg-surface-container-lowest"><td class="p-4 font-bold text-primary bg-surface-container-low">K06</td><td class="p-4 text-center text-secondary">0.11</td><td class="p-4 text-center text-secondary">0.12</td><td class="p-4 text-center text-secondary">0.14</td><td class="p-4 text-center text-secondary">0.16</td><td class="p-4 text-center text-secondary">0.20</td><td class="p-4 text-center bg-primary-container/5 font-bold">1</td></tr>
+                                    </tbody>
+                                    <tfoot>
+                                        <tr class="bg-surface-container-low font-bold">
+                                            <td class="p-4 text-primary">Jumlah</td><td class="p-4 text-center">2.061</td><td class="p-4 text-center">4.833</td><td class="p-4 text-center">8.619</td><td class="p-4 text-center">13.333</td><td class="p-4 text-center">20.200</td><td class="p-4 text-center">36.000</td>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="col-span-12 lg:col-span-4 flex flex-col gap-gutter">
+                            <div class="consistency-border bg-emerald-50 p-6 rounded-xl soft-whisper">
+                                <div class="flex items-center gap-3 mb-4"><span class="material-symbols-outlined text-emerald-600" style="font-variation-settings: 'FILL' 1;">check_circle</span><span class="font-headline-sm text-headline-sm text-emerald-800">Uji Konsistensi Diterima!</span></div>
+                                <p class="text-body-md text-emerald-700 leading-relaxed">Lambda Maks = <span class="font-bold">6.4336</span><br/>CI = <span class="font-bold">0.0867</span><br/>CR = <span class="font-bold">0.0699</span></p>
+                                <div class="mt-4 pt-4 border-t border-emerald-200"><span class="text-label-md uppercase tracking-wider font-bold text-emerald-800">Status: KONSISTEN</span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="screen-hasil" class="screen">
+                    <div class="flex flex-col md:flex-row md:items-center justify-between mb-8 gap-4">
+                        <div><h2 class="font-display-lg text-display-lg text-primary">Sintesis Akhir dan Perangkingan Dosen</h2></div>
+                        <div class="flex gap-3"><button class="flex items-center gap-2 px-6 py-2 bg-primary text-white rounded-lg font-body-md hover:opacity-90 transition-opacity"><span class="material-symbols-outlined text-[20px]">print</span>Cetak Laporan</button></div>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-gutter mb-8">
+                        <div class="bg-white p-6 rounded-xl soft-whisper-shadow border-l-4 border-primary"><p class="text-secondary font-label-md uppercase tracking-wider mb-2">Total Kandidat</p><p class="text-primary font-display-lg">10 <span class="text-body-md font-normal text-outline">Dosen</span></p></div>
+                        <div class="bg-white p-6 rounded-xl soft-whisper-shadow border-l-4 border-error"><p class="text-secondary font-label-md uppercase tracking-wider mb-2">Status Penilaian</p><p class="text-primary font-display-lg">Selesai</p></div>
+                    </div>
+                    <div class="bg-white rounded-xl soft-whisper-shadow overflow-hidden mb-8 border border-slate-100">
+                        <div class="p-6 border-b border-outline-variant flex justify-between items-center"><h3 class="font-headline-sm text-headline-sm text-primary">Daftar Peringkat Akademik</h3></div>
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left border-collapse">
+                                <thead>
+                                    <tr class="bg-surface-container-low text-secondary font-label-md uppercase tracking-widest"><th class="px-8 py-4 w-20">Rank</th><th class="px-4 py-4 w-24">ID</th><th class="px-4 py-4">Nama Lengkap</th><th class="px-8 py-4 text-right">Nilai Akhir</th></tr>
+                                </thead>
+                                <tbody class="text-on-surface">
+                                    <tr class="border-b bg-[#FFFBF0] group"><td class="px-8 py-6 relative"><div class="absolute left-0 top-0 bottom-0 w-1 bg-[#FFD700]"></div><span class="flex items-center justify-center w-8 h-8 bg-[#FFD700] text-primary font-bold rounded-full">1</span></td><td class="px-4 py-6 font-bold text-primary">A8</td><td class="px-4 py-6 font-bold text-primary">Puspa Eosina Hosen</td><td class="px-8 py-6 text-right font-display-lg text-headline-sm text-primary">0.09289</td></tr>
+                                    <tr class="border-b hover:bg-surface-container-lowest"><td class="px-8 py-6"><span class="flex items-center justify-center w-8 h-8 bg-slate-100 font-bold rounded-full">2</span></td><td class="px-4 py-6">A4</td><td class="px-4 py-6 font-semibold">Setya Permana Sutisna</td><td class="px-8 py-6 text-right font-bold text-primary">0.09047</td></tr>
+                                    <tr class="border-b hover:bg-surface-container-lowest"><td class="px-8 py-6"><span class="flex items-center justify-center w-8 h-8 bg-slate-100 font-bold rounded-full">3</span></td><td class="px-4 py-6">A5</td><td class="px-4 py-6 font-semibold">Nurul Cahyati</td><td class="px-8 py-6 text-right font-bold text-primary">0.08306</td></tr>
+                                    <tr class="border-b hover:bg-surface-container-lowest"><td class="px-8 py-6"><span class="flex items-center justify-center w-8 h-8 bg-slate-100 font-bold rounded-full">4</span></td><td class="px-4 py-6">A3</td><td class="px-4 py-6">Roy Waluyo</td><td class="px-8 py-6 text-right">0.07997</td></tr>
+                                    <tr class="border-b hover:bg-surface-container-lowest"><td class="px-8 py-6"><span class="flex items-center justify-center w-8 h-8 bg-slate-100 font-bold rounded-full">5</span></td><td class="px-4 py-6">A1</td><td class="px-4 py-6">Arief Goeritno</td><td class="px-8 py-6 text-right">0.07713</td></tr>
+                                    <tr class="border-b hover:bg-surface-container-lowest"><td class="px-8 py-6"><span class="flex items-center justify-center w-8 h-8 bg-slate-100 font-bold rounded-full">6</span></td><td class="px-4 py-6">A2</td><td class="px-4 py-6">Yuggo Afrianto</td><td class="px-8 py-6 text-right">0.07309</td></tr>
+                                    <tr class="border-b hover:bg-surface-container-lowest"><td class="px-8 py-6"><span class="flex items-center justify-center w-8 h-8 bg-slate-100 font-bold rounded-full">7</span></td><td class="px-4 py-6">A6</td><td class="px-4 py-6">Dosen A6</td><td class="px-8 py-6 text-right">0.06804</td></tr>
+                                    <tr class="border-b hover:bg-surface-container-lowest"><td class="px-8 py-6"><span class="flex items-center justify-center w-8 h-8 bg-slate-100 font-bold rounded-full">8</span></td><td class="px-4 py-6">A7</td><td class="px-4 py-6">Rulhendri</td><td class="px-8 py-6 text-right">0.05842</td></tr>
+                                    <tr class="border-b hover:bg-surface-container-lowest"><td class="px-8 py-6"><span class="flex items-center justify-center w-8 h-8 bg-slate-100 font-bold rounded-full">9</span></td><td class="px-4 py-6">A9</td><td class="px-4 py-6">Budi Hartono</td><td class="px-8 py-6 text-right">0.04441</td></tr>
+                                    <tr class="hover:bg-surface-container-lowest"><td class="px-8 py-6"><span class="flex items-center justify-center w-8 h-8 bg-slate-100 font-bold rounded-full">10</span></td><td class="px-4 py-6">A15</td><td class="px-4 py-6">Joki Irawan</td><td class="px-8 py-6 text-right">0.04053</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </main>
+    </div>
+
+    <nav class="fixed bottom-0 left-0 w-full bg-surface shadow-[0_-4px_10px_rgba(0,0,0,0.05)] flex justify-around items-center py-3 md:hidden z-50 border-t border-outline-variant">
+        <a id="mob-dashboard" onclick="navigate('dashboard')" class="flex flex-col items-center text-primary font-bold"><span class="material-symbols-outlined">dashboard</span><span class="text-[10px]">Dashboard</span></a>
+        <a id="mob-kriteria" onclick="navigate('kriteria')" class="flex flex-col items-center text-on-surface-variant"><span class="material-symbols-outlined">list_alt</span><span class="text-[10px]">Kriteria</span></a>
+        <a id="mob-alternatif" onclick="navigate('alternatif')" class="flex flex-col items-center text-on-surface-variant"><span class="material-symbols-outlined">groups</span><span class="text-[10px]">Dosen</span></a>
+        <a id="mob-hasil" onclick="navigate('hasil')" class="flex flex-col items-center text-on-surface-variant"><span class="material-symbols-outlined">emoji_events</span><span class="text-[10px]">Hasil</span></a>
+    </nav>
+
+    <script>
+        function navigate(page) {
+            document.querySelectorAll('.screen').forEach(el => el.classList.remove('active'));
+            document.getElementById('screen-' + page).classList.add('active');
+
+            const defaultNavClass = "nav-item flex items-center px-6 py-4 border-l-4 border-transparent text-on-surface-variant hover:bg-surface-container-low transition-all cursor-pointer";
+            const activeNavClass = "nav-item flex items-center px-6 py-4 border-l-4 border-primary text-primary font-bold bg-surface-container-high transition-all cursor-pointer";
+            document.querySelectorAll('.nav-item').forEach(el => el.className = defaultNavClass);
+            document.getElementById('nav-' + page).className = activeNavClass;
+
+            if(page !== 'matriks') {
+                const defaultMobClass = "flex flex-col items-center text-on-surface-variant";
+                const activeMobClass = "flex flex-col items-center text-primary font-bold";
+                document.querySelectorAll('nav.fixed.bottom-0 > a').forEach(el => el.className = defaultMobClass);
+                document.getElementById('mob-' + page).className = activeMobClass;
+            }
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const ctx = document.getElementById('dashboardChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['A8', 'A4', 'A5', 'A3', 'A1', 'A2', 'A6', 'A7', 'A9', 'A15'],
+                    datasets: [{
+                        label: 'Skor Akhir (AHP)',
+                        data: [0.09289, 0.09047, 0.08306, 0.07997, 0.07713, 0.07309, 0.06804, 0.05842, 0.04441, 0.04053],
+                        backgroundColor: '#131b2e', 
+                        borderRadius: 6,
+                        borderWidth: 0,
+                        barPercentage: 0.6
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            backgroundColor: '#1b1b1d',
+                            padding: 12,
+                            titleFont: { family: 'Inter', size: 14, weight: 'bold' },
+                            bodyFont: { family: 'Inter', size: 13 }
+                        }
+                    },
+                    scales: {
+                        y: { beginAtZero: true, grid: { color: '#f0edef', drawBorder: false }, ticks: { font: { family: 'Inter', size: 12 }, color: '#54647a' } },
+                        x: { grid: { display: false }, ticks: { font: { family: 'Inter', size: 12, weight: 'bold' }, color: '#45464d' } }
+                    },
+                    animation: { duration: 1500, easing: 'easeOutQuart' }
+                }
+            });
+        });
+    </script>
+</body>
+</html>
